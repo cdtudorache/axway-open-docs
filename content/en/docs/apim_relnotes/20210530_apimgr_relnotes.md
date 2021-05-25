@@ -63,6 +63,10 @@ Perform these steps to update an API Gateway installation, which has YAML config
 5. Update [API Gateway server](/docs/apim_installation/apigw_upgrade/upgrade_steps_oneversion/).
 6. Deploy your upgraded YAML configurations, using `managedomain` or `projdeploy` scripts, to replace the placeholder configuration. For more information, see [Package and deploy a YAML configuration](/docs/apim_yamles/yamles_packaging_deployment).
 
+### Import APIs over HTTPS through a HTTPS proxy server
+
+It is now possible to send a API download request to a HTTPS proxy server over HTTPS. If it is a requirement to use a proxy server to import APIs it is recommended to do so using a HTTPS Proxy server. This ensures the confidentiality of the download request as the request is sent over HTTPS. For more information, see [Configure a proxy server](/docs/apim_administration/apimgr_admin/api_mgmt_config/#configure-a-proxy-server).
+
 ## Important changes
 
 It is important, especially when upgrading from an earlier version, to be aware of the following changes in the behavior or operation of the product in this update.
@@ -74,6 +78,14 @@ Host name verification was introduced to alleviate a potential CWE-933 security 
 Host name verification is not enabled for upgrading customers, who use Embedded Active MQ with SSL enabled, because this causes their JMS queues to be unable to service requests. However, enabling host name verification when using SSL is a more secure option and should be considered as part of the upgrade.
 
 Enabling host name verification requires a certificate update. For more information, see [Embedded ActiveMQ settings in Policy Studio](/docs/apim_reference/general_activemq_settings/).
+
+### INSTALL_DIR/apigateway folder permissions changed
+
+The permissions on the folder `INSTALL_DIR/apigateway` changed from 755 to 750. The reason for this is to deny users who are not an owner or part of the group read, write and execute permissions. It is recommended to verify any business process or custom scripts that access files in this directory as this is potentially a breaking change.
+
+### ODJBC8 driver update
+
+The Oracle JDBC driver used by the API Gateway and Policy Studio has been upgraded from OJDBC6 to OJDBC8. This driver works with all of our supported Oracle databases. For more information, see [Relational databases](/docs/apim_installation/apigtw_install/system_requirements/#relational-databases).
 
 ## Deprecated features
 
@@ -106,7 +118,12 @@ This version of API Gateway and API Manager includes:
 
 | Internal ID | Case ID            | Cve Identifier                               | Description      |
 | ----------- | ------------------ | -------------------------------------------- | ---              |
-|RDAPI-21747|||**Issue**: TLS host name verification is not configurable and cannot be enabled for Embedded ActiveMQ. **Resolution**: TLS host name verification is now configurable, and it is enabled by default.|
+|RDAPI-21747||CWE-933|**Issue**: TLS host name verification is not configurable and cannot be enabled for Embedded ActiveMQ. **Resolution**: TLS host name verification is now configurable, and it is enabled by default.|
+|RDAPI-23668||CWE-350|**Issue**: DNS re-branding in NodeJS < 10.24. **Resolution**: The version of NodeJS shipped with API Gateway to facilitate client SDK generator was upgraded to 10.24.0.|
+|RDAPI-23400||CWE-693|**Issue**: Default security headers missing in API Gateway Manager 302 responses. **Resolution**: Added missing default security headers.|
+|RDAPI-23367||CWE-693|**Issue**: X-XSS-Header should be set to '1; mode=block' by default. **Resolution**: Updated instances of X-XSS-Header to be '1; mode=block'.|
+|RDAPI-21214||CWE-319|**Issue**: Insecure transport in SecureHttpClient.java. **Resolution**: Added option to send data securely over HTTPS.|
+|RDAPI-14825||CWE-89|**Issue**: Query string injection: Amazon Web Services - AttributeExtractSimpleDBProcessor.java. **Resolution**: Removed unused filter and processor from product.|
 
 ### Other fixed issues
 
