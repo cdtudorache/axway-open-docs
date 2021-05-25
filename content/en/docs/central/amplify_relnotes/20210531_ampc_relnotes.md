@@ -30,7 +30,7 @@ The Amplify Central WebUI is used by both the API providers and consumers to man
 
 The Amplify Central WebUI includes the following enhancements:  
 
-* The developer role has access to the environment (read-only) and API services (create/delete).
+* The developer role has access to the environment (read-only) and API services (create/read/update/delete).
 * Central Administrator can edit the environment details and update image, title,tags and attributes.
 
 ### Axway APIM Gateway / AWS / Azure agents
